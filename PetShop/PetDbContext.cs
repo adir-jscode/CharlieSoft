@@ -12,7 +12,7 @@ namespace PetShop
         private readonly string _connectionString;
         public PetDbContext()
         {
-            _connectionString = "Server =.\\SQLEXPRESS; Database = CSharpB15; User Id = csharpb15; Password = 123456; Trust Server Certificate = True";
+            _connectionString = "Server =.\\SQLEXPRESS; Database = CSharpB15; User Id = csharpb15; Password = 1111; Trust Server Certificate = True";
         }
 
         //Db Sets
@@ -32,7 +32,10 @@ namespace PetShop
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(_connectionString);
+                optionsBuilder.UseSqlServer(_connectionString, builder =>
+                {
+                    builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                });
             }
             base.OnConfiguring(optionsBuilder);
             
